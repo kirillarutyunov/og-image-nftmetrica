@@ -3,7 +3,6 @@ import { parseRequest } from './_lib/parser';
 import { getScreenshot } from './_lib/chromium';
 import { getHtml } from './_lib/template';
 
-const isDev = !process.env.AWS_REGION;
 const isHtmlDebug = process.env.OG_HTML_DEBUG === '1';
 
 export default async function handler(req: IncomingMessage, res: ServerResponse) {
@@ -16,7 +15,7 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
             return;
         }
         const { fileExtension } = parsedReq;
-        const file = await getScreenshot(html, fileExtension, isDev);
+        const file = await getScreenshot(html, fileExtension);
         res.statusCode = 200;
         res.setHeader('Content-Type', `image/${fileExtension}`);
         res.setHeader('Cache-Control', `public, immutable, no-transform, s-maxage=31536000, max-age=31536000`);
